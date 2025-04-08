@@ -25,7 +25,7 @@ class Mailer extends Controller
 
         $message = view('Email/welcome_email', $data);  
 
-        $email->setTo('viratsharma1909@gmail.com','nishantchauhan2706@gmail.com'); 
+        $email->setTo('viratsharma1909@gmail.com'); 
         $email->setFrom('vikash.vayuz@gmail.com', 'TemplateEmails');
         $email->setSubject('Welcome to Our Website');
         $email->setMessage($message);
@@ -45,7 +45,10 @@ class Mailer extends Controller
         $email = $this->request->getPost('email');
         $name  = $this->request->getPost('name') ?? 'User'; 
         $otp   = rand(100000, 999999);
-    
+        //here we can send to otp any gmail acc
+     if (!str_ends_with($email, '@gmail.com')) {
+        return "Only Gmail addresses are allowed to receive OTP.";
+    }
         $db = \Config\Database::connect();
         $builder = $db->table('users');
         $builder->insert([
